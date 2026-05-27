@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Basecamp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Sistem Manajemen Basecamp Pendakian</h1>
+    </header>
+
+    <main>
+        <!-- Form Daftar Pendaki -->
+        <section class="card">
+            <h2>Daftarkan Pendaki</h2>
+            <input type="text" id="idTicket" placeholder="ID Ticket (contoh: MT-001)">
+            <input type="text" id="nama" placeholder="Nama Pendaki">
+            <input type="text" id="kontak" placeholder="Kontak Darurat">
+            <button onclick="daftarPendaki()">Daftarkan</button>
+            <p id="pesan-daftar" class="pesan"></p>
+        </section>
+
+        <!-- Antrian -->
+        <section class="card">
+            <h2>Antrian Pendaki</h2>
+            <button onclick="lihatAntrian()">Refresh Antrian</button>
+            <p id="jumlah-antrian"></p>
+            <ul id="list-antrian"></ul>
+        </section>
+
+        <!-- Kirim Pendaki -->
+        <section class="card">
+            <h2>Kirim Pendaki ke Jalur</h2>
+            <input type="number" id="kuota" placeholder="Jumlah kuota">
+            <button onclick="kirimPendaki()">Kirim</button>
+            <p id="pesan-kirim" class="pesan"></p>
+        </section>
+
+        <!-- Riwayat -->
+        <section class="card">
+            <h2>Riwayat Pendaki</h2>
+            <button onclick="lihatRiwayat()">Refresh Riwayat</button>
+            <ul id="list-riwayat"></ul>
+        </section>
+
+        <!-- Cari Pendaki -->
+        <section class="card">
+            <h2>Cari Pendaki</h2>
+            <input type="text" id="cari-id" placeholder="Masukkan ID Ticket">
+            <button onclick="cariPendaki()">Cari</button>
+            <p id="hasil-cari" class="pesan"></p>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
