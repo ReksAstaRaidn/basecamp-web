@@ -14,6 +14,12 @@ class Stack:
             return self.stack.pop()
         else:
             raise IndexError("Stack is empty")
+        
+    def checkout_pendaki(self, idTicket):
+        for i in range(len(self.stack)-1, -1, -1):
+            if isinstance(self.stack[i], dict) and self.stack[i].get("id") == idTicket:
+                return self.stack.pop(i)
+        return None
 
     def peek(self):
         if not self.is_empty():
