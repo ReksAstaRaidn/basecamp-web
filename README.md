@@ -4,15 +4,15 @@ Aplikasi web untuk membantu petugas basecamp dalam mengelola pendaftaran pendaki
 
 ---
 
-## Teknologi yang Digunakan
+## Tech Stack
 
 - **Backend**: Python, FastAPI, Uvicorn
 - **Frontend**: HTML, CSS, JavaScript (Vanilla)
-- **Struktur Data**: Hash Table, Queue, Stack, Graph
+- **Struktur Data**: Hash Table, Queue, Stack
 
 ---
 
-## Prasyarat
+## Requirements
 
 Pastikan perangkat kamu sudah terinstall:
 
