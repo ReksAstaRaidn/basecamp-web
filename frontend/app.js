@@ -4,12 +4,13 @@ async function daftarPendaki() {
     const idTicket = document.getElementById("idTicket").value.trim()
     const nama = document.getElementById("nama").value.trim()
     const kontak = document.getElementById("kontak").value.trim()
+    const tanggal = document.getElementById("tanggal").value.trim()
     const pesan = document.getElementById("pesan-daftar")
 
     const response = await fetch(`${API}/daftar-pendaki`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idTicket, nama, kontak })
+        body: JSON.stringify({ idTicket, nama, kontak, tanggal})
     })
 
     const data = await response.json()
@@ -27,7 +28,7 @@ async function lihatAntrian() {
     list.innerHTML = ""
     data.pendaki.forEach(p => {
         const li = document.createElement("li")
-        li.textContent = `${p.id} — ${p.nama} (${p.kontak})`
+        li.textContent = `${p.id} — ${p.nama} (${p.kontak}) pada tanggal ${p.tanggal}`
         list.appendChild(li)
     })
 }
@@ -49,6 +50,20 @@ async function kirimPendaki() {
     pesan.className = `pesan ${data.status === "sukses" ? "sukses" : "gagal"}`
 }
 
+async function checkoutPendaki() {
+    const idTicket = document.getElementById("checkout-id").value.trim()
+    const pesan = document.getElementById("pesan-checkout")
+
+    const response = await fetch(`${API}/checkout-pendaki/${idTicket}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+    })
+
+    const data = await response.json()
+    pesan.textContent = data.message || data.pesan
+    pesan.className = `pesan ${data.status === "sukses" ? "sukses" : "gagal"}`
+}
+
 async function lihatRiwayat() {
     const response = await fetch(`${API}/riwayat`)
     const data = await response.json()
@@ -57,7 +72,7 @@ async function lihatRiwayat() {
     list.innerHTML = ""
     data.riwayat.forEach(p => {
         const li = document.createElement("li")
-        li.textContent = `${p.id} — ${p.nama} (${p.kontak})`
+        li.textContent = `${p.id} — ${p.nama} (${p.kontak}) pada tanggal ${p.tanggal}`
         list.appendChild(li)
     })
 }

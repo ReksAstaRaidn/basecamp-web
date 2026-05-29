@@ -22,6 +22,7 @@ class DataPendakian(BaseModel):
     idTicket: str
     nama: str
     kontak: str
+    tanggal: str
     
 class KuotaPendaki(BaseModel):
     kuota: int
@@ -32,7 +33,7 @@ def root():
 
 @app.post("/daftar-pendaki")
 def daftar_pendakian(data: DataPendakian):
-    berhasil = dataPendaki.daftar_pendaki(data.idTicket, data.nama, data.kontak)
+    berhasil = dataPendaki.daftar_pendaki(data.idTicket, data.nama, data.kontak, data.tanggal)
     if not berhasil:
         return {"status": "gagal", "message": f"ID Ticket {data.idTicket} sudah terdaftar"}    
 
@@ -42,7 +43,7 @@ def daftar_pendakian(data: DataPendakian):
     
 @app.get("/antrian")
 def lihat_antrian():
-    return {"jumlah": antrianPendaki.waktu_tunggu(), "pendaki": antrianPendaki.queue}
+    return {"jumlah": antrianPendaki.waktu_tunggu(), "pendaki": antrianPendaki.queue, }
 
 @app.post("/kirim-pendaki")
 def kirim_pendaki(data: KuotaPendaki):
@@ -58,6 +59,14 @@ def kirim_pendaki(data: KuotaPendaki):
         return {"status": "gagal", "pesan": "Antrian kosong"}
     
     return {"status": "sukses", "dikirim": dikirim, "jumlah": len(dikirim)}
+
+@app.post("/checkout-pendaki/{idTicket}")
+def checkout_pendaki(idTicket: str):
+    pendaki = riwayatPendaki.checkout_pendaki(idTicket)
+    if not pendaki:
+        return {"status": "gagal", "pesan": f"Pendaki dengan ID Ticket {idTicket} tidak ditemukan dalam riwayat"}
+    
+    return {"status": "sukses", "message": f"Pendaki {pendaki['nama']} dengan ID Ticket {idTicket} berhasil checkout"}
 
 @app.get("/riwayat")
 def lihat_riwayat():

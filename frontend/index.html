@@ -19,6 +19,7 @@
             <input type="text" id="idTicket" placeholder="ID Ticket (contoh: MT-001)">
             <input type="text" id="nama" placeholder="Nama Pendaki">
             <input type="text" id="kontak" placeholder="Kontak Darurat">
+            <input type="date" id="tanggal" placeholder="Tanggal Pendakian">
             <button onclick="daftarPendaki()">Daftarkan</button>
             <p id="pesan-daftar" class="pesan"></p>
         </section>
@@ -28,7 +29,7 @@
             <h2>Antrian Pendaki</h2>
             <button onclick="lihatAntrian()">Refresh Antrian</button>
             <p id="jumlah-antrian"></p>
-            <ul id="list-antrian"></ul>
+            <ul id="list-antrian"></ul> 
         </section>
 
         <!-- Kirim Pendaki -->
@@ -37,6 +38,14 @@
             <input type="number" id="kuota" placeholder="Jumlah kuota">
             <button onclick="kirimPendaki()">Kirim</button>
             <p id="pesan-kirim" class="pesan"></p>
+        </section>
+
+        <!-- Checkout Pendaki -->
+        <section class="card">
+            <h2>Checkout Pendaki</h2>
+            <input type="text" id="checkout-id" placeholder="Masukkan ID Ticket">
+            <button onclick="checkoutPendaki()">Checkout</button>
+            <p id="pesan-checkout" class="pesan"></p>
         </section>
 
         <!-- Riwayat -->
