@@ -3,7 +3,6 @@ class Stack:
         self.stack = []
 
     def push(self, item):
-        # Jika item adalah dict dengan id ticket, pastikan id belum ada di riwayat
         if isinstance(item, dict) and "id" in item:
             if any(entry.get("id") == item["id"] for entry in self.stack):
                 return False
