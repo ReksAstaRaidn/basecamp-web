@@ -17,11 +17,11 @@ class Hash:
         return False
 
     #daftarkan pendaki dengan idTicket, nama, dan kontak jika ID belum ada
-    def daftar_pendaki(self, idTicket, nama, kontak):
+    def daftar_pendaki(self, idTicket, nama, kontak, tanggal):
         index = self._hash(idTicket)
         if self.cek_duplikat_id(idTicket):
             return False
-        dataPendaki = {"id": idTicket, "nama": nama, "kontak": kontak}
+        dataPendaki = {"id": idTicket, "nama": nama, "kontak": kontak, "tanggal": tanggal}
         self.table[index].append(dataPendaki)
         return True
     
