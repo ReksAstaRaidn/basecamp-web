@@ -4,32 +4,40 @@ async function daftarPendaki() {
     const idTicket = document.getElementById("idTicket").value.trim()
     const nama = document.getElementById("nama").value.trim()
     const kontak = document.getElementById("kontak").value.trim()
-    const tanggal = document.getElementById("tanggal").value.trim()
+    const tanggal = document.getElementById("tanggal").value
+    const estimasi_jam = parseInt(document.getElementById("estimasi").value)
     const pesan = document.getElementById("pesan-daftar")
+
+    if (!idTicket || !nama || !estimasi_jam) {
+        pesan.textContent = "Data tidak lengkap!"
+        pesan.className = "pesan gagal"
+        return
+    }
 
     const response = await fetch(`${API}/daftar-pendaki`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idTicket, nama, kontak, tanggal})
+        body: JSON.stringify({ idTicket, nama, kontak, tanggal, estimasi_jam })
     })
 
     const data = await response.json()
     pesan.textContent = data.pesan
     pesan.className = `pesan ${data.status === "sukses" ? "sukses" : "gagal"}`
+    if (data.status === "sukses") {
+        lihatAntrian()
+    }
 }
 
 async function lihatAntrian() {
     const response = await fetch(`${API}/antrian`)
     const data = await response.json()
 
-    document.getElementById("jumlah-antrian").textContent = `Total: ${data.jumlah} pendaki`
-
     const list = document.getElementById("list-antrian")
     list.innerHTML = ""
     data.pendaki.forEach(p => {
-        const li = document.createElement("li")
-        li.textContent = `${p.id} — ${p.nama} (${p.kontak}) pada tanggal ${p.tanggal}`
-        list.appendChild(li)
+        const tr = document.createElement("tr")
+        tr.innerHTML = `<td>${p.id}</td><td>${p.nama}</td>`
+        list.appendChild(tr)
     })
 }
 
@@ -48,6 +56,31 @@ async function kirimPendaki() {
         ? `Berhasil mengirim: ${data.dikirim.join(", ")}`
         : data.pesan
     pesan.className = `pesan ${data.status === "sukses" ? "sukses" : "gagal"}`
+    
+    if (data.status === "sukses") {
+        lihatAntrian()
+        lihatMendaki()
+    }
+}
+
+async function lihatMendaki() {
+    const response = await fetch(`${API}/mendaki`)
+    const data = await response.json()
+
+    const list = document.getElementById("list-mendaki")
+    list.innerHTML = ""
+    data.pendaki.forEach(p => {
+        const tr = document.createElement("tr")
+        if (p.is_sos) tr.className = "sos-alert"
+        tr.innerHTML = `
+            <td>${p.id}</td>
+            <td>${p.nama}</td>
+            <td>${p.waktu_berangkat}</td>
+            <td>${p.estimasi_kembali}</td>
+            <td>${p.is_sos ? "<strong>OVERDUE (SOS)</strong>" : "Normal"}</td>
+        `
+        list.appendChild(tr)
+    })
 }
 
 async function checkoutPendaki() {
@@ -60,20 +93,33 @@ async function checkoutPendaki() {
     })
 
     const data = await response.json()
-    pesan.textContent = data.message || data.pesan
+    pesan.textContent = data.pesan
     pesan.className = `pesan ${data.status === "sukses" ? "sukses" : "gagal"}`
+    
+    if (data.status === "sukses") {
+        lihatMendaki()
+        lihatRiwayat()
+    }
 }
 
 async function lihatRiwayat() {
-    const response = await fetch(`${API}/riwayat`)
+    const tgl = document.getElementById("filter-tanggal").value
+    const url = tgl ? `${API}/riwayat?tanggal=${tgl}` : `${API}/riwayat`
+    
+    const response = await fetch(url)
     const data = await response.json()
 
     const list = document.getElementById("list-riwayat")
     list.innerHTML = ""
     data.riwayat.forEach(p => {
-        const li = document.createElement("li")
-        li.textContent = `${p.id} — ${p.nama} (${p.kontak}) pada tanggal ${p.tanggal}`
-        list.appendChild(li)
+        const tr = document.createElement("tr")
+        tr.innerHTML = `
+            <td>${p.id}</td>
+            <td>${p.nama}</td>
+            <td>${p.waktu_berangkat}</td>
+            <td>${p.waktu_kembali}</td>
+        `
+        list.appendChild(tr)
     })
 }
 
@@ -85,10 +131,17 @@ async function cariPendaki() {
     const data = await response.json()
 
     if (data.status === "sukses") {
-        hasil.textContent = `Ditemukan: ${data.data.nama}, Kontak: ${data.data.kontak}`
+        hasil.textContent = `[${data.lokasi}] ${data.data.nama} (ID: ${data.data.id})`
         hasil.className = "pesan sukses"
     } else {
         hasil.textContent = data.pesan
         hasil.className = "pesan gagal"
     }
+}
+
+// Initial loads
+window.onload = () => {
+    lihatAntrian()
+    lihatMendaki()
+    lihatRiwayat()
 }

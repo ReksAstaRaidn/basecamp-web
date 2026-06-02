@@ -1,7 +1,20 @@
+import json
+import os
+
 class Hash:
     def __init__(self, size=1000):
         self.size = size
         self.table = [[] for _ in range(size)]
+    
+    def save_to_json(self, filename):
+        with open(filename, 'w') as f:
+            json.dump(self.table, f)
+
+    def load_from_json(self, filename):
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                self.table = json.load(f)
+                self.size = len(self.table)
     
     # fungsi hash sederhana yang mengambil bagian numerik dari idTicket dan menggunakan modulus untuk menentukan index
     def _hash(self, idTicket):

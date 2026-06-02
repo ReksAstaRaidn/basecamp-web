@@ -1,7 +1,19 @@
+import json
+import os
+
 class Queue:
     def __init__(self):
         self.queue = []
         
+    def save_to_json(self, filename):
+        with open(filename, 'w') as f:
+            json.dump(self.queue, f)
+
+    def load_from_json(self, filename):
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                self.queue = json.load(f)
+
     def penambahan_pendaki(self, idTicket):
         self.queue.append(idTicket)
         

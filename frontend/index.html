@@ -3,63 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Manajemen Basecamp</title>
+    <title>Sistem Manajemen Basecamp (PRO)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Sistem Manajemen Basecamp Pendakian</h1>
+        <h1>Sistem Manajemen Basecamp</h1>
     </header>
 
     <main>
         <!-- Form Daftar Pendaki -->
         <section class="card">
-            <h2>Daftarkan Pendaki</h2>
-            <input type="text" id="idTicket" placeholder="ID Ticket (contoh: MT-001)">
-            <input type="text" id="nama" placeholder="Nama Pendaki">
-            <input type="text" id="kontak" placeholder="Kontak Darurat">
-            <input type="date" id="tanggal" placeholder="Tanggal Pendakian">
-            <button onclick="daftarPendaki()">Daftarkan</button>
+            <h2>Daftarkan Pendaki Baru</h2>
+            <div class="input-group">
+                <input type="text" id="idTicket" placeholder="ID Ticket (contoh: MT-001)">
+                <input type="text" id="nama" placeholder="Nama Pendaki">
+                <input type="text" id="kontak" placeholder="Kontak Darurat">
+                <label for="tanggal">Tanggal Daftar:</label>
+                <input type="date" id="tanggal">
+                <label for="estimasi">Estimasi Durasi (Jam):</label>
+                <input type="number" id="estimasi" placeholder="Contoh: 48" min="1">
+            </div>
+            <button onclick="daftarPendaki()">Daftarkan ke Antrian</button>
             <p id="pesan-daftar" class="pesan"></p>
+        </section>
+
+        <!-- Monitoring Jalur (SOS Detection) -->
+        <section class="card wide">
+            <h2>Monitoring Pendaki (Di Jalur)</h2>
+            <button onclick="lihatMendaki()" class="secondary">Refresh Data Jalur</button>
+            <div class="table-container">
+                <table id="table-mendaki">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Berangkat</th>
+                            <th>Est. Kembali</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list-mendaki"></tbody>
+                </table>
+            </div>
         </section>
 
         <!-- Antrian -->
         <section class="card">
             <h2>Antrian Pendaki</h2>
-            <button onclick="lihatAntrian()">Refresh Antrian</button>
-            <p id="jumlah-antrian"></p>
-            <ul id="list-antrian"></ul> 
+            <button onclick="lihatAntrian()" class="secondary">Refresh Antrian</button>
+            <div class="table-container">
+                <table id="table-antrian">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list-antrian"></tbody>
+                </table>
+            </div>
         </section>
 
         <!-- Kirim Pendaki -->
         <section class="card">
             <h2>Kirim Pendaki ke Jalur</h2>
             <input type="number" id="kuota" placeholder="Jumlah kuota">
-            <button onclick="kirimPendaki()">Kirim</button>
+            <button onclick="kirimPendaki()">Berangkatkan</button>
             <p id="pesan-kirim" class="pesan"></p>
         </section>
 
         <!-- Checkout Pendaki -->
         <section class="card">
-            <h2>Checkout Pendaki</h2>
+            <h2>Checkout (Turun Gunung)</h2>
             <input type="text" id="checkout-id" placeholder="Masukkan ID Ticket">
-            <button onclick="checkoutPendaki()">Checkout</button>
+            <button onclick="checkoutPendaki()">Konfirmasi Kembali</button>
             <p id="pesan-checkout" class="pesan"></p>
         </section>
 
-        <!-- Riwayat -->
-        <section class="card">
-            <h2>Riwayat Pendaki</h2>
-            <button onclick="lihatRiwayat()">Refresh Riwayat</button>
-            <ul id="list-riwayat"></ul>
+        <!-- Riwayat (Daily) -->
+        <section class="card wide">
+            <h2>Arsip & Riwayat Harian</h2>
+            <div class="filter-group">
+                <input type="date" id="filter-tanggal">
+                <button onclick="lihatRiwayat()" class="secondary">Tampilkan</button>
+            </div>
+            <div class="table-container">
+                <table id="table-riwayat">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Berangkat</th>
+                            <th>Kembali</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list-riwayat"></tbody>
+                </table>
+            </div>
         </section>
 
         <!-- Cari Pendaki -->
         <section class="card">
             <h2>Cari Pendaki</h2>
             <input type="text" id="cari-id" placeholder="Masukkan ID Ticket">
-            <button onclick="cariPendaki()">Cari</button>
+            <button onclick="cariPendaki()">Search Master Database</button>
             <p id="hasil-cari" class="pesan"></p>
         </section>
     </main>

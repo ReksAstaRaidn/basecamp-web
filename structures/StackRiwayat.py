@@ -1,6 +1,18 @@
+import json
+import os
+
 class Stack:
     def __init__(self):
         self.stack = []
+
+    def save_to_json(self, filename):
+        with open(filename, 'w') as f:
+            json.dump(self.stack, f)
+
+    def load_from_json(self, filename):
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                self.stack = json.load(f)
 
     def push(self, item):
         if isinstance(item, dict) and "id" in item:
