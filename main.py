@@ -26,12 +26,10 @@ ACTIVE_SESSION_FILE = os.path.join(DATA_DIR, "active_session.json")
 # Ensure directories exist
 os.makedirs(HISTORY_DIR, exist_ok=True)
 
-# Data Structures
-# We use a dict to manage the active session for easier serialization
-# active_data = { "queue": [...], "on_trail": [...] }
-data_pendaki_master = Hash(size=1000) # Master database of all registered hikers
+
+data_pendaki_master = Hash(size=1000) 
 antrian_pendaki = Queue()
-pendaki_di_jalur = [] # List of hikers currently on the mountain
+pendaki_di_jalur = [] 
 
 def save_active_session():
     state = {
@@ -40,7 +38,6 @@ def save_active_session():
     }
     with open(ACTIVE_SESSION_FILE, "w") as f:
         json.dump(state, f)
-    # Also save master hash for searching
     data_pendaki_master.save_to_json(os.path.join(DATA_DIR, "master_hash.json"))
 
 def load_active_session():
